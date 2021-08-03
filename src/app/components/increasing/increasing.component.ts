@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-increasing',
@@ -6,9 +6,12 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./increasing.component.css']
 })
 export class IncreasingComponent {
-//  Si se requiere renombrar la propiedad del input, solo vasta con ingresarla en el parentesis
-  // @Input('valor') progress: number = 40;
-  @Input() progress: number = 40;
+  //  Si se requiere renombrar la propiedad del input, solo vasta con ingresarla en el parentesis
+  @Input('valor') progress: number = 40;
+  @Input() btnClass: string = 'btn btn-primary'
+
+  @Output() outputValue: EventEmitter<number> = new EventEmitter();
+  
   
   // get progressPercent() {
   //   return `${this.progress}%`
@@ -17,15 +20,18 @@ export class IncreasingComponent {
   changeValue(value: number): void {
     if (this.progress >= 100 && value >= 0) {
       this.progress = 100;
+      this.outputValue.emit(100);
       return;
     }
 
     if (this.progress <= 0 && value <= 0) {
       this.progress = 0
+      this.outputValue.emit(0);
       return;
     }
 
     this.progress += value;
+    this.outputValue.emit(this.progress)
   }
 
 }
